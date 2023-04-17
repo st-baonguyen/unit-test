@@ -1,9 +1,13 @@
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { environment } from '@config/environment';
+import axios, {
+  AxiosError,
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
+import { environment } from '../../../config/environment';
 import AuthHelper from '../helpers/authHelper';
 
 export class ApiService {
-
   axiosInstance: AxiosInstance;
   authHelper: AuthHelper;
 
@@ -26,7 +30,7 @@ export class ApiService {
     if (typeof uri[uri.length - 1] !== 'string') {
       paramsUrl = uri.pop();
       let url = uri.join('/');
-      Object.keys(paramsUrl).forEach(x => {
+      Object.keys(paramsUrl).forEach((x) => {
         url = url.replace(`:${x}`, paramsUrl[x]);
       });
       return url;
@@ -37,38 +41,51 @@ export class ApiService {
 
   get(uri: (string | object)[], params = {}, moreConfigs = {}) {
     return new Promise((resolve, reject) => {
-      const request = this.axiosInstance.get(this.createURL(uri), { params, ...moreConfigs });
+      const request = this.axiosInstance.get(this.createURL(uri), {
+        params,
+        ...moreConfigs
+      });
       this._handleRespond(request, resolve, reject);
     });
   }
 
   post(uri: (string | object)[], data = {}, moreConfigs = {}) {
     return new Promise((resolve, reject) => {
-      const request = this.axiosInstance.post(this.createURL(uri), data, moreConfigs);
+      const request = this.axiosInstance.post(
+        this.createURL(uri),
+        data,
+        moreConfigs
+      );
       this._handleRespond(request, resolve, reject);
     });
   }
 
   put(uri: (string | object)[], data = {}, moreConfigs = {}) {
     return new Promise((resolve, reject) => {
-      const request = this.axiosInstance.put(this.createURL(uri), data, moreConfigs);
+      const request = this.axiosInstance.put(
+        this.createURL(uri),
+        data,
+        moreConfigs
+      );
       this._handleRespond(request, resolve, reject);
     });
   }
 
   delete(uri: (string | object)[], moreConfigs = {}) {
     return new Promise((resolve, reject) => {
-      const request = this.axiosInstance.delete(this.createURL(uri), moreConfigs);
+      const request = this.axiosInstance.delete(
+        this.createURL(uri),
+        moreConfigs
+      );
       this._handleRespond(request, resolve, reject);
     });
   }
 
   multipeGets(apiRequests: any) {
-    const apiReqs = apiRequests.map((v: any) =>
-    this.axiosInstance.get(v),
-    );
+    const apiReqs = apiRequests.map((v: any) => this.axiosInstance.get(v));
     return new Promise((resolve, reject) => {
-      axios.all(apiReqs)
+      axios
+        .all(apiReqs)
         .then((resp: AxiosResponse[]) => {
           resolve(resp.map((v: any) => v.data));
         })
@@ -77,16 +94,18 @@ export class ApiService {
   }
 
   private _handleRespond(request: any, resolve, reject) {
-    return request.then((resp: AxiosResponse) => {
-      resolve(resp.data);
-    }).catch((err: any) => {
-      reject(err);
-    });
+    return request
+      .then((resp: AxiosResponse) => {
+        resolve(resp.data);
+      })
+      .catch((err: any) => {
+        reject(err);
+      });
   }
 
   private _setInterceptors() {
-    this.axiosInstance.interceptors.request.use(
-      (request: AxiosRequestConfig) => this.authHelper.setAuthHeader(request),
+    this.axiosInstance.interceptors.request.use((request: AxiosRequestConfig) =>
+      this.authHelper.setAuthHeader(request)
     );
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => response,

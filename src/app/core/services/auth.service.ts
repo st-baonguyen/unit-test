@@ -1,5 +1,5 @@
 import AuthHelper from '../helpers/authHelper';
-import { ENDPOINT } from '@config/endpoint';
+import { ENDPOINT } from '../../../config/endpoint';
 import { ApiService } from './api.service';
 
 export class AuthService extends AuthHelper {
