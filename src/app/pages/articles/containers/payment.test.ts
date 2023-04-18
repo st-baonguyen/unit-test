@@ -1,17 +1,9 @@
-import {
-  addProduct,
-  editProduct,
-  removeProduct,
-  getAllQuantity,
-  getPromotion,
-  calculateMoney
-} from './payment';
+import { ShoppingCart } from './payment';
 
-const currentCart = [
-  { id: 1, name: 'apple', quantity: 4, price: 10 },
-  { id: 2, name: 'mango', quantity: 21, price: 8 },
-  { id: 3, name: 'rambutan', quantity: 50, price: 2 }
-];
+// const currentCart = [
+const apple = { id: 1, name: 'apple', quantity: 1, price: 30 };
+const mango = { id: 2, name: 'mango', quantity: 1, price: 75 };
+const rambutan = { id: 3, name: 'rambutan', quantity: 1, price: 25 };
 
 const promotionList = [
   {
@@ -19,16 +11,16 @@ const promotionList = [
     name: 'apple',
     promotions: [
       {
+        quantity: 1,
+        percent: 1
+      },
+      {
+        quantity: 2,
+        percent: 4
+      },
+      {
         quantity: 3,
-        promotion: 1
-      },
-      {
-        quantity: 5,
-        promotion: 4
-      },
-      {
-        quantity: 10,
-        promotion: 8
+        percent: 8
       }
     ]
   },
@@ -37,16 +29,16 @@ const promotionList = [
     name: 'mango',
     promotions: [
       {
-        quantity: 10,
-        promotion: 2
+        quantity: 1,
+        percent: 2
       },
       {
-        quantity: 20,
-        promotion: 3
+        quantity: 2,
+        percent: 3
       },
       {
-        quantity: 30,
-        promotion: 5
+        quantity: 3,
+        percent: 4
       }
     ]
   },
@@ -55,89 +47,83 @@ const promotionList = [
     name: 'rambutan',
     promotions: [
       {
-        quantity: 15,
-        promotion: 4
+        quantity: 1,
+        percent: 1
       },
       {
-        quantity: 35,
-        promotion: 7
+        quantity: 3,
+        percent: 2
       },
       {
-        quantity: 45,
-        promotion: 10
+        quantity: 5,
+        percent: 3
       }
     ]
   }
 ];
 
-jest.mock('./payment', () => {
-  const originalModule = jest.requireActual('./payment');
-  return {
-    __esModule: true,
-    ...originalModule
-  };
-});
-
 describe('calculate money', () => {
+  const shoppingCarts = new ShoppingCart();
+  beforeAll(() => {
+    shoppingCarts.clearCart();
+  });
   describe('add product', () => {
     it('add new product', () => {
-      const prd = { id: 4, name: 'cherry', quantity: 2, price: 20 };
-      expect(addProduct(currentCart, prd)).toStrictEqual([
-        { id: 1, name: 'apple', quantity: 4, price: 10 },
-        { id: 2, name: 'mango', quantity: 21, price: 8 },
-        { id: 3, name: 'rambutan', quantity: 50, price: 2 },
-        { id: 4, name: 'cherry', quantity: 2, price: 20 }
-      ]);
-    });
-    it('add new product in empty arr', () => {
-      const prd = { id: 4, name: 'cherry', quantity: 2, price: 20 };
-      expect(addProduct([], prd)).toStrictEqual([
-        { id: 4, name: 'cherry', quantity: 2, price: 20 }
-      ]);
+      const prd = { id: 1, name: 'cherry', quantity: 1, price: 20 };
+      shoppingCarts.addProduct(prd);
+      expect(shoppingCarts.carts).toContain(prd);
     });
     it('add exist product', () => {
-      const prd = { id: 3, name: 'rambutan', quantity: 1 };
-      expect(addProduct(currentCart, prd)).toStrictEqual([
-        { id: 1, name: 'apple', quantity: 4, price: 10 },
-        { id: 2, name: 'mango', quantity: 21, price: 8 },
-        { id: 3, name: 'rambutan', quantity: 51, price: 2 }
-      ]);
+      const prd = { id: 1, name: 'cherry', quantity: 1, price: 20 };
+      // const prd = { id: 3, name: 'rambutan', quantity: 1 };
+      shoppingCarts.addProduct(prd);
+      expect(shoppingCarts.carts).toContainEqual({
+        id: 1,
+        name: 'cherry',
+        quantity: 2,
+        price: 20
+      });
     });
   });
   describe('edit product', () => {
     it('edit exist prd', () => {
-      const prd = { id: 3, name: '', quantity: 30 };
-      expect(editProduct(currentCart, prd)).toStrictEqual([
-        { id: 1, name: 'apple', quantity: 4, price: 10 },
-        { id: 2, name: 'mango', quantity: 21, price: 8 },
-        { id: 3, name: 'rambutan', quantity: 30, price: 2 }
-      ]);
+      shoppingCarts.editProduct(1, 30);
+      expect(shoppingCarts.carts).toContainEqual({
+        id: 1,
+        name: 'cherry',
+        quantity: 30,
+        price: 20
+      });
     });
     it('edit not exist prd', () => {
-      const prd = { id: 4, name: '', quantity: 30 };
-      expect(editProduct(currentCart, prd)).toStrictEqual([
-        { id: 1, name: 'apple', quantity: 4, price: 10 },
-        { id: 2, name: 'mango', quantity: 21, price: 8 },
-        { id: 3, name: 'rambutan', quantity: 50, price: 2 }
-      ]);
+      const unExistedPrd = { id: 100, name: 'Avocado', quantity: 100 };
+      shoppingCarts.editProduct(100, 100);
+      expect(shoppingCarts.carts).not.toMatchObject(unExistedPrd);
     });
   });
   it('remove prd', () => {
-    expect(removeProduct(currentCart, 2)).toStrictEqual([
-      { id: 1, name: 'apple', quantity: 4, price: 10 },
-      { id: 3, name: 'rambutan', quantity: 50, price: 2 }
-    ]);
+    shoppingCarts.addProduct(rambutan);
+    shoppingCarts.addProduct(rambutan);
+    shoppingCarts.removeProduct(3);
+    expect(shoppingCarts.carts).not.toContainEqual(rambutan);
   });
-  it('get promotion', () => {
-    expect(getPromotion(currentCart, promotionList)).toStrictEqual([
-      { id: 1, name: 'apple', quantity: 4, price: 10, promotion: 1 },
-      { id: 2, name: 'mango', quantity: 21, price: 8, promotion: 3 },
-      { id: 3, name: 'rambutan', quantity: 50, price: 2, promotion: 10 }
-    ]);
-  });
-  it('calculate money', () => {
-    const total =
-      4 * 10 * (99 / 100) + 21 * 8 * (97 / 100) + 50 * 2 * (90 / 100);
-    expect(calculateMoney(currentCart, promotionList)).toEqual(total);
+  describe('total money', () => {
+    beforeAll(() => {
+      shoppingCarts.clearCart();
+    });
+    it('calculate money', () => {
+      shoppingCarts.addProduct(apple);
+      shoppingCarts.addProduct(apple);
+      shoppingCarts.addProduct(mango);
+      shoppingCarts.addProduct(rambutan);
+      shoppingCarts.addProduct(rambutan);
+      shoppingCarts.addProduct(rambutan);
+      const total =
+        (apple.quantity * apple.price * 96) / 100 +
+        (mango.quantity * mango.price * 98) / 100 +
+        (rambutan.quantity * rambutan.price * 98) / 100;
+      shoppingCarts.calculateMoney(promotionList);
+      expect(shoppingCarts.totalPrice).toEqual(total);
+    });
   });
 });
