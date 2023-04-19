@@ -1,14 +1,3 @@
 {
-  "testEnvironment": "node",
-  "globals": {
-    "window": {
-      "location": {}
-    }
-  },
-  "setupFiles": ["./browserMocks.ts"],
-  "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>/src/$"
-  },
-  "moduleFileExtensions": ["ts", "tsx", "js", "jsx"],
-  "moduleDirectories": ["node_modules", "bower_components", "shared"]
+  "testEnvironment": "jsdom"
 }

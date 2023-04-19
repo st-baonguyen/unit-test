@@ -9,15 +9,15 @@ export class AuthStorageService implements AuthStorage {
 
   setToken(token?: any) {
     if (token) {
-      window.localStorage.setItem(this.ACCESS_TOKEN, token);
+      localStorage.setItem(this.ACCESS_TOKEN, token);
     }
   }
 
   getToken() {
-    return window.localStorage.getItem(this.ACCESS_TOKEN);
+    return localStorage.getItem(this.ACCESS_TOKEN);
   }
 
   removeToken() {
-    window.localStorage.removeItem(this.ACCESS_TOKEN);
+    localStorage.removeItem(this.ACCESS_TOKEN);
   }
 }
