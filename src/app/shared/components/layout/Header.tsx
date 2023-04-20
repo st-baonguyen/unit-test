@@ -12,6 +12,9 @@ export function Header() {
           <Link to="articles">Articles</Link>
         </li>
         <li>
+          <Link to="/users">Articles</Link>
+        </li>
+        <li>
           <Link to="auth/login">Login</Link>
         </li>
         <li>

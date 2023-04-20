@@ -26,17 +26,17 @@ middleware.run(appMiddleware);
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <AppSuspense fallback={<></>}>
+      {/* <AppSuspense fallback={<></>}>
         <Header />
       </AppSuspense>
-      <Header />
+      <Header /> */}
       <AppSuspense fallback={<></>}>
         <RouterOutlet routes={appRoutes} />
       </AppSuspense>
-      <Footer />
+      {/* <Footer />
       <AppSuspense fallback={<></>}>
         <Footer />
-      </AppSuspense>
+      </AppSuspense> */}
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
