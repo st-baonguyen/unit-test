@@ -62,37 +62,34 @@ const promotionList = [
   }
 ];
 
+const cherry =  { id: 4, name: 'cherry', quantity: 1, price: 20 };
+
 describe('calculate money', () => {
   const shoppingCarts = new ShoppingCart();
-  beforeAll(() => {
+  beforeEach(() => {
     shoppingCarts.clearCart();
   });
   describe('add product', () => {
     it('add new product', () => {
-      const prd = { id: 1, name: 'cherry', quantity: 1, price: 20 };
-      shoppingCarts.addProduct(prd);
-      expect(shoppingCarts.carts).toContain(prd);
+      shoppingCarts.addProduct(cherry);
+      expect(shoppingCarts.carts).toContain(cherry);
     });
     it('add exist product', () => {
-      const prd = { id: 1, name: 'cherry', quantity: 1, price: 20 };
-      // const prd = { id: 3, name: 'rambutan', quantity: 1 };
-      shoppingCarts.addProduct(prd);
+      shoppingCarts.addProduct(cherry);
+      shoppingCarts.addProduct(cherry);
       expect(shoppingCarts.carts).toContainEqual({
-        id: 1,
-        name: 'cherry',
-        quantity: 2,
-        price: 20
+        ...cherry,
+        quantity: 2
       });
     });
   });
   describe('edit product', () => {
     it('edit exist prd', () => {
-      shoppingCarts.editProduct(1, 30);
+      shoppingCarts.addProduct(cherry);
+      shoppingCarts.editProduct(4, 30);
       expect(shoppingCarts.carts).toContainEqual({
-        id: 1,
-        name: 'cherry',
-        quantity: 30,
-        price: 20
+        ...cherry,
+        quantity: 30
       });
     });
     it('edit not exist prd', () => {
@@ -108,10 +105,10 @@ describe('calculate money', () => {
     expect(shoppingCarts.carts).not.toContainEqual(rambutan);
   });
   describe('total money', () => {
-    beforeAll(() => {
-      shoppingCarts.clearCart();
-    });
-    it('calculate money', () => {
+    it('money in case empty cart', () => {
+      expect(shoppingCarts.totalPrice).toEqual(0);
+    }),
+    it('calculate money has cart', () => {
       shoppingCarts.addProduct(apple);
       shoppingCarts.addProduct(apple);
       shoppingCarts.addProduct(mango);
