@@ -65,6 +65,7 @@
     "@babel/preset-typescript": "^7.15.0",
     "@babel/runtime-corejs3": "^7.15.4",
     "@svgr/webpack": "^6.2.0",
+    "@testing-library/react": "^14.0.0",
     "@types/classnames": "^2.2.10",
     "@types/history": "^4.7.9",
     "@types/node": "^14.17.15",
