@@ -1,39 +1,37 @@
 import { all, put, takeLatest } from 'redux-saga/effects';
 import { ApiService } from '@app/core/services/api.service';
-import { GET_USER, GET_USERS } from './types';
+import { GET_USER, GET_USERS, SET_USERS } from './types';
 
 const api = new ApiService();
 
 function* getUsers() {
   try {
-    const res = yield api.get(['/users']);
-    console.log('res', res);
+    const res = yield api.get(['users']);
     yield put({
-      type: GET_USERS,
+      type: SET_USERS,
       payload: res
     });
   } catch (error) {
     yield put({
-      type: GET_USERS
+      type: SET_USERS
     });
   }
 }
 
 function* getUser(payload) {
   try {
-    const res = yield api.get(['users'], payload);
+    const res = yield api.get(['user'], payload);
     yield put({
-      type: GET_USER,
+      type: SET_USERS,
       payload: res
     });
   } catch (error) {
     yield put({
-      type: GET_USER
+      type: SET_USERS
     });
   }
 }
 
-export default function* userSagas() {
-  yield all([takeLatest(GET_USERS, getUsers)]);
-  yield all([takeLatest(GET_USER, getUser)]);
+export default function* userSaga() {
+  yield all([takeLatest(GET_USERS, getUsers), takeLatest(GET_USER, getUser)]);
 }

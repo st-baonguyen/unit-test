@@ -1,15 +1,15 @@
-import * as TYPES from './types';
+import * as types from './types';
 
 export const getUsers = () => ({
-  type: TYPES.GET_USERS
+  type: types.GET_USERS
 });
 
 export const getUser = (payload) => ({
-  type: TYPES.GET_USER,
+  type: types.GET_USER,
   payload
 });
 
 export const removeUser = (payload) => ({
-  type: TYPES.REMOVE_USER,
+  type: types.REMOVE_USER,
   payload
 });

@@ -1,8 +1,30 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const UserDetail = () => {
+type USER = {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: any;
+};
+
+const UserDetail = (props) => {
+  const { id, name, email, phone, address }: USER = props.user;
   return (
-    <div>This is user-detail page</div>
+    <Link to={`/user/${id}`}>
+      <table>
+        <tbody>
+          <tr>
+            <td>{name}</td>
+            <td>{email}</td>
+            <td>{phone}</td>
+            <td>{address.city}</td>
+            <td>X</td>
+          </tr>
+        </tbody>
+      </table>
+    </Link>
   );
 };
 

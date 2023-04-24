@@ -1,49 +1,55 @@
-import { getUsers } from '@app/stores/users/action';
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { getUsers } from '@app/stores/users/action';
+import UserDetail from './UserDetail';
 
 const UserList = () => {
   const dispatch = useDispatch();
-  const userList = useSelector((state: RootStateOrAny) => state.users);
+  const userList = useSelector((state: RootStateOrAny) => state.userReducer);
+  const [loading, setLoading] = useState(false);
 
-  console.log('userList', userList);
   useEffect(() => {
+    setLoading(true);
     dispatch(getUsers());
   }, []);
 
+  useEffect(() => {
+    console.log('userList', userList.data);
+    if (userList?.data?.length) {
+      setLoading(false);
+    }
+  }, [userList.data]);
+
   return (
-    <section>
-      <h1>Fixed Table header</h1>
-      <div className="tbl-header">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Address</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-        </table>
-      </div>
-      <div className="tbl-content">
-        <Link to={'/user'}>
-          <table>
-            <tbody>
-              <tr>
-                <td>AAC</td>
-                <td>AUSTRALIAN COMPANY </td>
-                <td>$1.38</td>
-                <td>+2.01</td>
-                <td>X</td>
-              </tr>
-            </tbody>
-          </table>
-        </Link>
-      </div>
-    </section>
+    <>
+      {loading ? (
+        <p>Loading ...</p>
+      ) : (
+        <section>
+          <h1>User List</h1>
+          <div className="tbl-header">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div className="tbl-content">
+            {userList?.data?.map((user, index) => (
+              <Fragment key={index}>
+                <UserDetail user={user} />
+              </Fragment>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
   );
 };
 

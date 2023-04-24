@@ -22,18 +22,14 @@
       "@shared/*": ["src/app/shared/*"],
       "@config/*": ["src/config/*"]
     },
-    "lib": [
-      "es6",
-      "es7",
-      "dom"
-    ]
+    "lib": ["es6", "es7", "dom"],
+    "types": ["node", "jest"]
   },
   "include": [
     "./src/**/*",
+    "./src/**/*.ts",
+    "./jest.config.ts",
+    "./jest.setup.ts"
   ],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules"
-  ]
+  "exclude": ["dist", "build", "node_modules"]
 }

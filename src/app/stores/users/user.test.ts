@@ -1,4 +1,17 @@
+import * as Reducer from './reducer';
+
 describe('test user', () => {
+  describe('test redux', () => {
+    it('should return the initial state', () => {
+      expect(Reducer.initialState).toEqual({
+        data: null,
+        error: null
+      });
+    });
+    it('should return the user list from empty to has data', () => {
+      expect(Reducer.initialState.data).toHaveLength(10);
+    });
+  });
   describe('test get user', () => {
     it('get user has been call', () => {});
     it('empty user', () => {});
