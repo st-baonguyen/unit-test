@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '@app/stores/users/action';
-import UserDetail from './UserDetail';
+import UserComponent from './UserComponent';
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,6 @@ const UserList = () => {
   }, []);
 
   useEffect(() => {
-    console.log('userList', userList.data);
     if (userList?.data?.length) {
       setLoading(false);
     }
@@ -26,11 +25,11 @@ const UserList = () => {
         <p>Loading ...</p>
       ) : (
         <section>
-          <h1>User List</h1>
+          <h1 data-testid="user-list-title">User List</h1>
           <div className="tbl-header">
             <table>
               <thead>
-                <tr>
+                <tr data-testid="user-list-row">
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
@@ -43,7 +42,7 @@ const UserList = () => {
           <div className="tbl-content">
             {userList?.data?.map((user, index) => (
               <Fragment key={index}>
-                <UserDetail user={user} />
+                <UserComponent user={user} />
               </Fragment>
             ))}
           </div>

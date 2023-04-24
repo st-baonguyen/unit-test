@@ -17,17 +17,9 @@ import '../stylesheet/styles.scss';
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      {/* <AppSuspense fallback={<></>}>
-        <Header />
-      </AppSuspense>
-      <Header /> */}
       <AppSuspense fallback={<></>}>
         <RouterOutlet routes={appRoutes} />
       </AppSuspense>
-      {/* <Footer />
-      <AppSuspense fallback={<></>}>
-        <Footer />
-      </AppSuspense> */}
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

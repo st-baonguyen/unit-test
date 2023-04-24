@@ -4,7 +4,8 @@ import { REMOVE_USER, SET_USERS } from './types';
 export const initialState = {
   // isLoading: false,
   data: null,
-  error: null
+  error: null,
+  amountUser: 0
 };
 
 const setUsers = (state, payload) => {
